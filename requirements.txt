@@ -1,0 +1,4 @@
+FinNews
+Pillow
+tweepy
+git+https://github.com/LIAAD/yake
