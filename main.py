@@ -61,7 +61,7 @@ for idx, article in enumerate(news.get_news()[::-1]):
 
         # figure out hashtags
         keywords = kw_extractor.extract_keywords(f"{article.title} {article.summary}")
-        keywords = ["#"+hashtag_re.sub("", key[0]) for key in keywords if key[1] < 0.1]
+        keywords = ["#"+hashtag_re.sub("", key[0]) for key in keywords if key[1] < 0.12]
 
         # save and upload image
         img.thumbnail((512, 512))
