@@ -33,7 +33,7 @@ hashtag_re = re.compile("[^A-Za-z0-9]")
 
 # Last date
 last_tweet = datetime.fromtimestamp(float(open("./latest.txt", "r").read()))
-curr_date = None
+new_last_tweet = 0
 
 for idx, article in enumerate(news.get_news()[::-1]):
     # skip if already known
@@ -47,7 +47,8 @@ for idx, article in enumerate(news.get_news()[::-1]):
     )
     if curr_date < last_tweet:
         continue
-
+    new_last_tweet = max(curr_date.timestamp(), new_last_tweet)
+        
     # create image
     img = template.copy()
     fnt = ImageFont.truetype("./font.ttf", font)
@@ -83,6 +84,6 @@ for idx, article in enumerate(news.get_news()[::-1]):
     twitter.update_status(content, media_ids=[media.media_id])
     print(content)
 
-if curr_date is not None:
+if new_last_tweet > 0:
     with open("./latest.txt", "w+") as fp:
-        fp.write(f"{curr_date.timestamp()}")
+        fp.write(f"{new_last_tweet}")
