@@ -42,7 +42,8 @@ for idx, article in enumerate(news.get_news()[::-1]):
         minute=article.published_parsed.tm_min,
         second=article.published_parsed.tm_sec
     )
-    if curr_date < last_tweet and True:
+    
+    if curr_date < last_tweet:
         continue
 
     img = template.copy()
@@ -68,8 +69,13 @@ for idx, article in enumerate(news.get_news()[::-1]):
         media_category="TweetImage"
     )
 
-    twitter.update_status(f"{article.summary}\nSource: {article.link}\n{' '.join(config['tags'] + keywords)}",
-                          media_ids=[media.media_id])
+    content = f"{article.summary}\nSource: {article.link}"
+    tags = config['tags'] + keywords
+    while len(content) + 1 + len(tags[0]) < 280 and len(tags) > 0:
+        content += f" #{tags.pop(0)}"
+    content = content[:280]
+
+    twitter.update_status(content, media_ids=[media.media_id])
 
 if curr_date is not None:
     with open("./latest.txt", "w+") as fp:
