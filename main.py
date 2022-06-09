@@ -46,7 +46,7 @@ for idx, article in enumerate(news.get_news()[::-1]):
             minute=article.published_parsed.tm_min,
             second=article.published_parsed.tm_sec
         )
-        if curr_date < last_tweet:
+        if curr_date <= last_tweet:
             continue
         new_last_tweet = max(curr_date.timestamp(), new_last_tweet)
 
