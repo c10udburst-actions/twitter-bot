@@ -1,1 +1,41 @@
+name: Run bot
 
+on:
+  schedule:
+    - cron: "0 5,10,20 * * *"
+  workflow_dispatch:
+  
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+      - name: Install requirements
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install -r requirements.txt
+      - name: Fetch config
+        run: |
+          wget -O config.json "$URL" > /dev/null 2>&1 
+        env:
+          URL: ${{ secrets.CONFIG_URL }}
+      - name: Run Bot
+        run: |
+          python3 --version
+          python3 main.py
+      - name: Push to repo
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -m "chore: Update latest.txt" || exit 0   # do not error if nothing to commit
+          git push
