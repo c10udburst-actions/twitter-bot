@@ -72,7 +72,7 @@ for idx, article in enumerate(news.get_news()[::-1]):
     content = f"{article.summary}\nSource: {article.link}"
     tags = config['tags'] + keywords
     while len(content) + 1 + len(tags[0]) < 280 and len(tags) > 0:
-        content += f" #{tags.pop(0)}"
+        content += f" {tags.pop(0)}"
     content = content[:280]
 
     twitter.update_status(content, media_ids=[media.media_id])
