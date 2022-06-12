@@ -89,4 +89,4 @@ for idx, article in enumerate(news.get_news()[::-1]):
 
 if new_last_tweet > 0:
     with open("./latest.txt", "w+") as fp:
-        fp.write(f"{new_last_tweet}")
+        fp.write(f"{new_last_tweet + 5}")
